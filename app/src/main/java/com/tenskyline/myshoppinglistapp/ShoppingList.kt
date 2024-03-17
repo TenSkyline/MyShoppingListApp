@@ -63,7 +63,25 @@ fun ShoppingListApp(){
                 .padding(16.dp)
         ){
             items(sItems){
-                ShoppingListItem(it, {}, {})
+                item ->
+                if (item.isEditing){
+                    ShoppingItemEditor(item = item, onEditComplete = {
+                        editedName, editedQuantity ->
+                        sItems = sItems.map { it.copy(isEditing = false)}
+                        val editedItem = sItems.find { it.id == item.id }
+                        editedItem?.let {
+                            it.name = editedName
+                            it.quantity = editedQuantity
+                        }
+                    })
+                }else{
+                    ShoppingListItem(item = item, onEditClick = {
+                        //finding out wich item we want to edit then change the boolean to true
+                        sItems = sItems.map { it.copy(isEditing = it.id == item.id)}
+                    }, onDeleteClick = {
+                        sItems = sItems-item
+                    })
+                }
             }
         }
     }
@@ -142,13 +160,17 @@ fun ShoppingItemEditor(item: ShoppingItem, onEditComplete: (String, Int) -> Unit
                 value= editedName,
                 onValueChange = {editedName = it},
                 singleLine = true,
-                modifier = Modifier.wrapContentSize().padding(8.dp)
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(8.dp)
             )
             BasicTextField(
                 value= editedQuantity,
                 onValueChange = {editedQuantity = it},
                 singleLine = true,
-                modifier = Modifier.wrapContentSize().padding(8.dp)
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(8.dp)
             )
         }
 
@@ -179,7 +201,8 @@ fun ShoppingListItem(
             .border(
                 border = BorderStroke(2.dp, Color(0XFF018786)),
                 shape = RoundedCornerShape(20)
-            )
+            ),
+        horizontalArrangement = Arrangement.SpaceBetween
     ){
         Text(text = item.name, modifier = Modifier.padding(8.dp))
         Text(text = "Qty: ${item.quantity}", modifier = Modifier.padding(8.dp))
