@@ -1,7 +1,7 @@
 package com.tenskyline.myshoppinglistapp
 
 data class LocationData(
-    val langitude: Double,
+    val latitude: Double,
     val longitude: Double
 )
 
