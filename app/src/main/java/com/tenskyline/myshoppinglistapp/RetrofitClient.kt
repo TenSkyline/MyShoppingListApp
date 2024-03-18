@@ -7,9 +7,9 @@ object RetrofitClient {
     private const val BASE_URL = "https://maps.googleapis.com/"
 
     fun create(): GeocodingApiService {
-        val retfofit =
+        val retrofit =
             Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
                 .build()
-        return retfofit.create(GeocodingApiService::class.java)
+        return retrofit.create(GeocodingApiService::class.java)
     }
 }
