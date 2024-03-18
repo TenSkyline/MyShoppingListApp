@@ -41,7 +41,7 @@ fun Navigation() {
     val locationUtils = LocationUtils(context)
 
     NavHost(navController, startDestination = "shoppinglistscreen", builder = {
-        composable("shoppinglistscreen"){
+        composable("shoppinglistscreen") {
             ShoppingListApp(
                 locationUtils = locationUtils,
                 viewModel = viewModel,
@@ -50,14 +50,13 @@ fun Navigation() {
                 address = viewModel.address.value.firstOrNull()?.formatted_address ?: "No Address"
             )
         }
-        dialog("locationscreen"){
-        viewModel.location.value?.let {
-                it1 ->
-                LocationSelectionScreen(location = it1, onLocationSelected = {locationdata ->
+        dialog("locationscreen") {
+            viewModel.location.value?.let { it1 ->
+                LocationSelectionScreen(location = it1, onLocationSelected = { locationdata ->
                     viewModel.fetchAddress("${locationdata.latitude}, ${locationdata.longitude}")
                     navController.popBackStack()
                 })
-        }
+            }
         }
     })
 }

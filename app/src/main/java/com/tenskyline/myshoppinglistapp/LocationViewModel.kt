@@ -22,12 +22,14 @@ class LocationViewModel : ViewModel() {
     fun fetchAddress(
         latLng: String
     ) {
+        Log.d("lat", "fetchAddress: $latLng")
         try {
             viewModelScope.launch {
                 val result = RetrofitClient.create().getAddressFromCoordinates(
                     latLng, "AIzaSyDXILxn6kbUtrt-45hYmHQ6PTO8MxIcrZA"
                 )
                 _address.value = result.results
+                Log.d("", "fetchAddress: $latLng, ${result.results}")
             }
         } catch (e: Exception) {
             Log.d("res1", "${e.cause} ${e.message}")

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Looper
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -19,7 +20,6 @@ import java.util.Locale
 
 class LocationUtils(val context: Context) {
 
-
     private val _fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
@@ -30,6 +30,7 @@ class LocationUtils(val context: Context) {
                 super.onLocationResult(locationResult)
                 locationResult.lastLocation?.let {
                     val location = LocationData(latitude = it.latitude, longitude = it.longitude)
+                    Log.d(TAG, "onLocationResult: ${location}")
                     viewModel.updateLocation(location)
                 }
             }
@@ -62,5 +63,9 @@ class LocationUtils(val context: Context) {
         } else {
             "Address not found"
         }
+    }
+
+    companion object {
+        private const val TAG = "LocationUtils"
     }
 }
